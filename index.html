@@ -125,7 +125,7 @@
                 class="task m-3 p-2 bg-secondary"
                 :style="[{'background': task.background}]"
               >
-              <button @click="arrayinp(i)"
+              <button @click="array(i, 'inp')"
                        type="button"
                       class="btn btn-secondary btn-lg butto">
                       &rarr;</button>
@@ -139,10 +139,10 @@
             <template v-for="(task ,i) in inProgress" :key="i">
               <div class="task m-3 p-2 bg-primary">
                 <div class="tasksclear-titlec">
-                  <button @click="arraydone(i)"
+                  <button @click="array(i, 'don')"
               type="button"
              class="btn btn-secondary btn-lg butto">
-             &rarr;</button>{{ task.title }} <button @click="arraytodo(i)"
+             &rarr;</button><b>{{ task.title }} </b><button @click="array(i,'tod')"
              type="button"
             class="btn btn-secondary btn-lg butto1">
             &larr;</button></div>
@@ -151,14 +151,17 @@
           </template>
           </div>
           <div class="col-4 bg-success">
-            <button  type="button" class="btn btn-secondary btn-lg butto1">&larr;</button>
+
             <h2>Done</h2>
-            <template >
-            <div class="tasksclear-titlec">
-              <button @click="arraytodo(i)"
+            <template v-for="(task ,i) in done" :key="i">
+            <div class="task m-3 p-2 bg-primary">
+              <div class="tasksclear-titlec">
+              <button @click="array(i, 'inp1')"
               type="button"
-             class="btn btn-secondary btn-lg butto">
-             &rarr;</button>{{ }}
+             class="btn btn-secondary btn-lg butto1">
+             &larr;</button><b>{{ task.title }} </b>
+              </div>
+             <div class="tasksclear-contentc">{{ task.content }}</div>
             </div>
               </template>
           </div>
@@ -185,31 +188,25 @@
             this.toDo.push({ title: this.title, content: this.content, fontSize: this.fontSize });
           }
         },
-        delTask() {
-          if(this.title || this.content){
-
-          }
-        }
-        },
-        arrayinp(i){
+        array(i, name){
+          if(name === 'inp'){
           this.inProgress.push(this.toDo[i]);
-          this.toDo.splice(i, 1);
-        },
-        arraydone(i){
+          this.toDo.splice(i, 1)
+          }
+          if(name === 'don'){
           this.done.push(this.inProgress[i]);
-          this.inProgress.splice(i, 1);
-        },
-        arrayinp1(i){
+          this.inProgress.splice(i, 1)
+          }
+          if(name === 'inp1'){
           this.inProgress.push(this.done[i]);
-          this.done.splice(i, 1);
-        },
-        arraytodo(i){
+          this.done.splice(i, 1)
+          }
+          if(name === 'tod'){
           this.toDo.push(this.inProgress[i]);
-          this.inProgress.splice(i, 1);
-        }
-
-
-
-      })
+          this.inProgress.splice(i, 1)
+          }
+      },
+    },
+  })
   </script>
 </html>
