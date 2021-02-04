@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -25,19 +26,24 @@
         top:5px;
         float:left;
        }
-div{
-  text-align: center;
-}
+      div{
+        text-align: center;
+      }
       img {
         margin: 70px;
       }
       button {
         position: relative;
       }
-
+      .but {
+        position: fixed;
+      }
       .task-title,
       .task-content {
         text-align: center;
+      }
+      .task{
+        position: relative;
       }
     </style>
   </head>
@@ -99,9 +105,7 @@ div{
                     ADD
                   </button>
                   <div class="d-flex justify-content-center align-items-center mb-5">
-
                     </button>
-
                     </button>
                   </div>
                 </form>
@@ -116,33 +120,46 @@ div{
         <div class="row">
           <div class="col-4 bg-primary">
             <h2>To do</h2>
-            <tempate v-for="task in tasks">
-
+            <tempate v-for="(task, i) in toDo" :key="i">
               <div
-                class="task m-3 p-2"
+                class="task m-3 p-2 bg-secondary"
                 :style="[{'background': task.background}]"
               >
-              <button @click="array(tasks)" id="app" type="button" class="btn btn-secondary btn-lg butto">&rarr;</button>
+              <button @click="arrayinp(i)"
+                       type="button"
+                      class="btn btn-secondary btn-lg butto">
+                      &rarr;</button>
                 <div class="task-title"><b>{{ task.title }}</b></div>
                 <div class="task-content">{{ task.content }}</div>
               </div>
             </tempate>
           </div>
           <div class="col-4 bg-warning">
-            <button  @click="array(tasks)" type="button" class="btn btn-secondary btn-lg  butto1">&larr;</button>
-            <button type="button" class="btn btn-secondary btn-lg butto">&rarr;</button>
             <h2>In progress</h2>
-            <template v-for="task in tasks">
-            <div class="tasksclear-titlec">{{ tasksclear.titlec }}</div>
-            <div class="tasksclear-contentc">{{ tasksclear.contentc }}</div>
+            <template v-for="(task ,i) in inProgress" :key="i">
+              <div class="task m-3 p-2 bg-primary">
+                <div class="tasksclear-titlec">
+                  <button @click="arraydone(i)"
+              type="button"
+             class="btn btn-secondary btn-lg butto">
+             &rarr;</button>{{ task.title }} <button @click="arraytodo(i)"
+             type="button"
+            class="btn btn-secondary btn-lg butto1">
+            &larr;</button></div>
+                <div class="tasksclear-contentc">{{ task.content }}</div>
+              </div>
           </template>
           </div>
           <div class="col-4 bg-success">
-            <button @click="array(tasks)" type="button" class="btn btn-secondary btn-lg butto1">&larr;</button>
+            <button  type="button" class="btn btn-secondary btn-lg butto1">&larr;</button>
             <h2>Done</h2>
-            <template v-for="task in tasks">
-            <div class="tasksclear-titlec">{{ tasksclear.titlec }}</div>
-            <div class="tasksclear-contentc">{{ tasksclear.contentc }}</div>
+            <template >
+            <div class="tasksclear-titlec">
+              <button @click="arraytodo(i)"
+              type="button"
+             class="btn btn-secondary btn-lg butto">
+             &rarr;</button>{{ }}
+            </div>
               </template>
           </div>
         </div>
@@ -154,35 +171,45 @@ div{
     const app = new Vue({
       el: '#app',
       data: {
-        tasks: [{ title: '', content: '' }],
+        toDo: [],
+        inProgress: [],
+        done:[],
         title: '',
         content: '',
-        tasksclear: [{titlec:'',contentc:''}],
-        titlec: '',
-        contentс: '',
     },
       methods: {
         addTask() {
-
-          this.tasks.push({ title: this.title, content: this.content });
-        },
-        delTask()
-      {
-        this.tasks.push({ title:this.titlec, content: this.contentc});
-      },
-
-        array(tasks)
-        {for(var i = 0;i<tasks.length;)
-          if (tasks[i] === tasksclear[i])
-          {
-            addTask();
+          if(!this.title || !this.content ){
+            return
+          }else{
+            this.toDo.push({ title: this.title, content: this.content, fontSize: this.fontSize });
           }
-          else
-        {
-          delTask();
+        },
+        delTask() {
+          if(this.title || this.content){
+
+          }
         }
+        },
+        arrayinp(i){
+          this.inProgress.push(this.toDo[i]);
+          this.toDo.splice(i, 1);
+        },
+        arraydone(i){
+          this.done.push(this.inProgress[i]);
+          this.inProgress.splice(i, 1);
+        },
+        arrayinp1(i){
+          this.inProgress.push(this.done[i]);
+          this.done.splice(i, 1);
+        },
+        arraytodo(i){
+          this.toDo.push(this.inProgress[i]);
+          this.inProgress.splice(i, 1);
         }
-      }
-    })
+
+
+
+      })
   </script>
 </html>
